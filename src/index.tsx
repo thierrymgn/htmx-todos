@@ -5,6 +5,16 @@ import { BaseHtml } from "./components/BaseHtml";
 import { TodoItem } from "./components/TodoItem";
 import { TodoList } from "./components/TodoList";
 import { randomUUID } from "uncrypto";
+import { createConsola } from "consola";
+
+const logger = createConsola({
+	fancy: true,
+	formatOptions: {
+		date: true,
+		colors: true,
+		columns: 2,
+	},
+});
 
 export type Todo = {
 	id: string;
@@ -63,28 +73,37 @@ const app = new Elysia()
 				app
 					.get("/", ({ params }) => {
 						const todo = db.find((t) => t.id === params.id);
-						if (todo) {
-							return <TodoItem {...todo} />;
+						if (!todo) {
+							throw new Error("Todo not found");
 						}
+
+						return <TodoItem {...todo} />;
 					})
 					.delete("/", ({ params }) => {
 						const todo = db.find((t) => t.id === params.id);
-						if (todo) {
-							db.splice(db.indexOf(todo), 1);
+						if (!todo) {
+							throw new Error("Todo not found");
 						}
+
+						db.splice(db.indexOf(todo), 1);
 					})
 					.post("/toggle", ({ params }) => {
 						const todo = db.find((t) => t.id === params.id);
-
-						if (todo) {
-							todo.done = !todo.done;
-							return <TodoItem {...todo} />;
+						if (!todo) {
+							throw new Error("Todo not found");
 						}
+
+						todo.done = !todo.done;
+						logger.info(
+							`Todo with id ${todo.id} is ${todo.done ? "done" : "not done"}`,
+						);
+
+						return <TodoItem {...todo} />;
 					}),
 			),
 	)
 	.listen(3000);
 
-console.log(
+logger.box(
 	`🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`,
 );
