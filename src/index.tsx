@@ -14,6 +14,7 @@ export type Todo = {
 
 // in-memory db for testing
 const db: Todo[] = [
+	{ id: randomUUID(), text: "Use Bun", done: true },
 	{ id: randomUUID(), text: "Learn HTMX", done: false },
 	{ id: randomUUID(), text: "Learn Elysia", done: false },
 ];
