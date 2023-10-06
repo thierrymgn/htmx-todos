@@ -20,7 +20,7 @@ export function TodoItem({ text, id, done }: Todo) {
 				hx-delete={`/todos/${id}`}
 				hx-swap="outerHTML"
 				hx-target="closest li"
-				class="text-red-500 hover:underline text-sm"
+				class="text-red-500 hover:underline text-sm bg-transparent"
 			>
 				Delete
 			</button>

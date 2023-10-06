@@ -4,6 +4,7 @@ import * as elements from "typed-html";
 import { BaseHtml } from "./components/BaseHtml";
 import { TodoItem } from "./components/TodoItem";
 import { TodoList } from "./components/TodoList";
+import { randomUUID } from "uncrypto";
 
 export type Todo = {
 	id: string;
@@ -13,8 +14,8 @@ export type Todo = {
 
 // in-memory db for testing
 const db: Todo[] = [
-	{ id: "1", text: "Learn HTMX", done: false },
-	{ id: "2", text: "Learn Elysia", done: false },
+	{ id: randomUUID(), text: "Learn HTMX", done: false },
+	{ id: randomUUID(), text: "Learn Elysia", done: false },
 ];
 
 const app = new Elysia()
@@ -42,7 +43,7 @@ const app = new Elysia()
 					}
 
 					const newTodo: Todo = {
-						id: Math.random().toString(16),
+						id: randomUUID(),
 						text: body.text,
 						done: false,
 					};
@@ -59,11 +60,9 @@ const app = new Elysia()
 			)
 			.group("/:id", (app) =>
 				app
-					.post("/toggle", ({ params }) => {
+					.get("/", ({ params }) => {
 						const todo = db.find((t) => t.id === params.id);
-
 						if (todo) {
-							todo.done = !todo.done;
 							return <TodoItem {...todo} />;
 						}
 					})
@@ -72,10 +71,18 @@ const app = new Elysia()
 						if (todo) {
 							db.splice(db.indexOf(todo), 1);
 						}
+					})
+					.post("/toggle", ({ params }) => {
+						const todo = db.find((t) => t.id === params.id);
+
+						if (todo) {
+							todo.done = !todo.done;
+							return <TodoItem {...todo} />;
+						}
 					}),
 			),
 	)
-	.listen(1234);
+	.listen(3000);
 
 console.log(
 	`🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`,

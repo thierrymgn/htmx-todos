@@ -12,7 +12,7 @@ export function BaseHtml({ children }: elements.Children) {
 				<script src="https://cdn.jsdelivr.net/npm/@unocss/runtime" />
 				<link
 					rel="stylesheet"
-					href="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind.min.css"
+					href="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind-compat.min.css"
 				/>
 			</head>
 			{children}
