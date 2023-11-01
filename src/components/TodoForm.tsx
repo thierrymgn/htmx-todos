@@ -8,7 +8,11 @@ export function TodoForm() {
 			_="on submit target.reset()"
 			class="mt-4 w-full flex gap-2"
 		>
+			<label for="text" class="sr-only">
+				Todo text
+			</label>
 			<input
+				id="text"
 				type="text"
 				name="text"
 				class="px-3 py-1 border-solid border border-gray-800 rounded-md flex-grow"
