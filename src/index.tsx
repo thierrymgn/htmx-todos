@@ -1,11 +1,11 @@
 import { html } from "@elysiajs/html";
+import { createConsola } from "consola";
 import { Elysia, t } from "elysia";
 import * as elements from "typed-html";
+import { randomUUID } from "uncrypto";
 import { BaseHtml } from "./components/BaseHtml";
 import { TodoItem } from "./components/TodoItem";
 import { TodoList } from "./components/TodoList";
-import { randomUUID } from "uncrypto";
-import { createConsola } from "consola";
 
 const logger = createConsola({
 	fancy: true,
