@@ -6,7 +6,7 @@ export function TodoForm() {
 			hx-post="/todos"
 			hx-swap="beforebegin"
 			hx-indicator="#indicator"
-			_="on submit target.reset()"
+			_="on htmx:afterOnLoad target.reset()"
 			class="mt-4 w-full flex gap-2"
 		>
 			<label for="text" class="sr-only">
