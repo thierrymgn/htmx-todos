@@ -1,0 +1,3 @@
+.htmx-request + span {
+  opacity: 0;
+}

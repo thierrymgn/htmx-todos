@@ -14,6 +14,7 @@ export function BaseHtml({ children }: elements.Children) {
 					rel="stylesheet"
 					href="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind-compat.min.css"
 				/>
+				<link rel="stylesheet" href="/public/styles.css" />
 			</head>
 			{children}
 		</html>

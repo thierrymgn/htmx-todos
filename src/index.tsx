@@ -1,4 +1,5 @@
 import { html } from "@elysiajs/html";
+import staticPlugin from "@elysiajs/static";
 import { createConsola } from "consola";
 import { Elysia, t } from "elysia";
 import * as elements from "typed-html";
@@ -30,6 +31,7 @@ const db: Todo[] = [
 ];
 
 const app = new Elysia()
+	.use(staticPlugin())
 	.use(html())
 	.get("/", ({ html }) =>
 		html(
@@ -102,7 +104,9 @@ const app = new Elysia()
 					}),
 			),
 	)
-	.listen(3000);
+	.listen({
+		port: 3001,
+	});
 
 logger.box(
 	`🦊 Elysia is running at http://${app.server?.hostname}:${app.server?.port}`,
