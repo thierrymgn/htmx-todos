@@ -1,16 +1,16 @@
 ---
-- import_playbook: bootstrap.yml
+-   import_playbook: bootstrap.yml
 
-- hosts: all
-  become: yes
-  roles:
-      - common
-      - nodejs
-      - bun
+-   hosts: all
+    become: yes
+    roles:
+        - common
+        - nodejs
+        - bun
 
-  tasks:
-      - name: Install git
-        apt:
-            name: git
-            state: present
-            update_cache: yes
+    tasks:
+        -   name: Install git
+            apt:
+                name: git
+                state: present
+                update_cache: yes

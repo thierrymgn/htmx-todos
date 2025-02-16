@@ -1,40 +1,40 @@
 ---
-- include_vars: ../vars/main.yml
+-   include_vars: ../vars/main.yml
 
-- name: Install cURL
-  package:
-      name: curl
-      state: present
+-   name: Install cURL
+    package:
+        name: curl
+        state: present
 
-- name: Download the NodeSource setup script
-  get_url:
-      url: "https://deb.nodesource.com/setup_{{ node_version }}.x"
-      dest: /tmp/setup_{{ node_version }}.x
-      mode: '0755'
+-   name: Download the NodeSource setup script
+    get_url:
+        url: "https://deb.nodesource.com/setup_{{ node_version }}.x"
+        dest: /tmp/setup_{{ node_version }}.x
+        mode: '0755'
 
-- name: Run the NodeSource setup script
-  command: /tmp/setup_{{ node_version }}.x
-  args:
-      creates: /etc/apt/sources.list.d/nodesource.list
+-   name: Run the NodeSource setup script
+    command: /tmp/setup_{{ node_version }}.x
+    args:
+        creates: /etc/apt/sources.list.d/nodesource.list
 
-- name: Install Node.js
-  apt:
-      name: nodejs
-      state: present
-      update_cache: yes
-  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+-   name: Install Node.js
+    apt:
+        name: nodejs
+        state: present
+        update_cache: yes
+    when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
 
-- name: Verify Node.js installation
-  shell: node --version
-  register: node_version
+-   name: Verify Node.js installation
+    shell: node --version
+    register: node_version
 
-- name: Verify npm installation
-  command: npm --version
-  register: npm_version_output
-  changed_when: false
+-   name: Verify npm installation
+    command: npm --version
+    register: npm_version_output
+    changed_when: false
 
-- name: Display Node.js and npm versions
-  debug:
-      msg:
-          - "Node.js version installed: {{ node_version.stdout }}"
-          - "npm version installed: {{ npm_version_output.stdout }}"
+-   name: Display Node.js and npm versions
+    debug:
+        msg:
+            - "Node.js version installed: {{ node_version.stdout }}"
+            - "npm version installed: {{ npm_version_output.stdout }}"

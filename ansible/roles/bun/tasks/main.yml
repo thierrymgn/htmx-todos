@@ -1,14 +1,14 @@
 ---
-- name: Install Bun via npm
-  npm:
-      name: bun
-      global: yes
-      state: present
+-   name: Install Bun via npm
+    npm:
+        name: bun
+        global: yes
+        state: present
 
-- name: Verify Bun installation
-  command: bun --version
-  register: bun_version
-  changed_when: false
+-   name: Verify Bun installation
+    command: bun --version
+    register: bun_version
+    changed_when: false
 
-- debug:
-      msg: "Bun version installed: {{ bun_version.stdout }}"
+-   debug:
+        msg: "Bun version installed: {{ bun_version.stdout }}"

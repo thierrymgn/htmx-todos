@@ -1,49 +1,49 @@
 ---
-- hosts: all
-  become: yes
-  vars:
-      project_root: "{{ playbook_dir | dirname | dirname }}"
-  tasks:
-      - name: Create app directory
-        file:
-            path: /opt/todo-app
-            state: directory
-            mode: '0755'
+-   hosts: all
+    become: yes
+    vars:
+        project_root: "{{ playbook_dir | dirname | dirname }}"
+    tasks:
+        -   name: Create app directory
+            file:
+                path: /opt/todo-app
+                state: directory
+                mode: '0755'
 
-      - name: Find all project files
-        find:
-            paths: "{{ project_root }}"
-            recurse: yes
-        delegate_to: localhost
-        become: no
-        register: all_files
+        -   name: Find all project files
+            find:
+                paths: "{{ project_root }}"
+                recurse: yes
+            delegate_to: localhost
+            become: no
+            register: all_files
 
-      - name: Filter files
-        set_fact:
-            filtered_files: "{{ all_files.files | reject('search', '/node_modules/') | reject('search', '/.git/') | reject('search', '/.idea/') | reject('search', '/ansible/') | list }}"
+        -   name: Filter files
+            set_fact:
+                filtered_files: "{{ all_files.files | reject('search', '/node_modules/') | reject('search', '/.git/') | reject('search', '/.idea/') | reject('search', '/ansible/') | list }}"
 
-      - name: Create necessary directories
-        file:
-            path: "/opt/todo-app/{{ item.path | relpath(project_root) | dirname }}"
-            state: directory
-            mode: '0755'
-        with_items: "{{ filtered_files }}"
-        when: item.isdir is not defined or not item.isdir
+        -   name: Create necessary directories
+            file:
+                path: "/opt/todo-app/{{ item.path | relpath(project_root) | dirname }}"
+                state: directory
+                mode: '0755'
+            with_items: "{{ filtered_files }}"
+            when: item.isdir is not defined or not item.isdir
 
-      - name: Copy regular files
-        copy:
-            src: "{{ item.path }}"
-            dest: "/opt/todo-app/{{ item.path | relpath(project_root) }}"
-            mode: '0755'
-        with_items: "{{ filtered_files }}"
-        when: item.isdir is not defined or not item.isdir
+        -   name: Copy regular files
+            copy:
+                src: "{{ item.path }}"
+                dest: "/opt/todo-app/{{ item.path | relpath(project_root) }}"
+                mode: '0755'
+            with_items: "{{ filtered_files }}"
+            when: item.isdir is not defined or not item.isdir
 
-      - name: Install dependencies with Bun
-        command: bun install
-        args:
-            chdir: /opt/todo-app
+        -   name: Install dependencies with Bun
+            command: bun install
+            args:
+                chdir: /opt/todo-app
 
-      - name: Start the application with Bun (in background)
-        shell: nohup bun start > app.log 2>&1 &
-        args:
-            chdir: /opt/todo-app
+        -   name: Start the application with Bun (in background)
+            shell: nohup bun start > app.log 2>&1 &
+            args:
+                chdir: /opt/todo-app
